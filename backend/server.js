@@ -56,6 +56,6 @@ async function testConnection() {
 }
 testConnection();
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🤖 Smart Chatbot Engine initialized on http://localhost:${PORT}`);
 });
