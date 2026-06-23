@@ -1,8 +1,11 @@
 import axios from 'axios'
 
-/** Axios instance for the roaster API (Vite proxies `/api` to the backend in dev). */
+// 💻 THE FIX: Dynamically read your live Railway URL in production, fallback locally
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+
+/** Axios instance for the roaster API */
 export const api = axios.create({
-  baseURL: '',
+  baseURL: BASE_URL, 
   headers: {
     'Content-Type': 'application/json',
   },
