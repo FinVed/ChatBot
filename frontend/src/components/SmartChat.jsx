@@ -80,7 +80,10 @@ export default function SmartChat() {
     setMessages(updatedMessages);
 
     // Dynamic pipeline target selector variables
-    let targetUrl = 'http://localhost:5001/api/chat'; 
+    // let targetUrl = 'http://localhost:5001/api/chat'; 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+    let targetUrl = `${API_URL}/api/chat`;
+
     const baseBodyPayload = {
       messages: updatedMessages,
       conversationId: conversationId,
@@ -89,13 +92,13 @@ export default function SmartChat() {
 
     // Route Selection Split A: Handle Multimodal Requests
     if (selectedImage) {
-      targetUrl = 'http://localhost:5001/api/chat-multimodal';
+      targetUrl = `${API_URL}/api/chat-multimodal`;
       baseBodyPayload.images = [{ mediaType: selectedImage.mediaType, base64Data: selectedImage.base64Data }];
     } 
     // Route Selection Split B: Handle Retrieval-Augmented Generation Document Requests
     else if (attachedDocs.length > 0) {
       // ⚡ UPDATED: Route points cleanly to your single-call RAG route matching the exact backend parameter name
-      targetUrl = 'http://localhost:5001/api/chat-with-rag';
+      targetUrl = `${API_URL}/api/chat-with-rag`;
       baseBodyPayload.documents = attachedDocs; 
     }
 
