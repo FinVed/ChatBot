@@ -12,8 +12,8 @@ import { fetch as undiciFetch } from 'undici'
 import dotenv from 'dotenv';
 dotenv.config();
 
-// 1. Fallback environment configuration constants
-const FALLBACK_MODEL = 'claude-sonnet-4-6'
+// 💻 THE FIX: Use a real, valid Anthropic model name that supports vision!
+const FALLBACK_MODEL = 'claude-3-5-sonnet-20241022' 
 const MAX_RETRIES = 3
 const INITIAL_RETRY_DELAY_MS = 1000
 
