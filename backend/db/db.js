@@ -3,26 +3,24 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME || 'demo',
-  process.env.DB_USER || 'root',
-  process.env.DB_PASSWORD || 'Password',
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 3306,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: 'mysql',
-    logging: false, // ⚡ CRUCIAL: Stops Sequelize from printing massive image text blobs in your Railway logs
+    logging: false, 
 
-    // ⚡ FIX 1: Add a connection pool so the database can reuse stable channels
+    // ⚡ CONTROL THE SOCKET POOL: Keeps the connection stable under heavy image payloads
     pool: {
-      max: 5,         // Max active connections
-      min: 0,         // Min connections kept open
-      acquire: 30000, // Max time (ms) to wait for connection before failing
-      idle: 10000     // Time (ms) a connection can stay idle before closing
+      max: 3,         // Low max pool ensures your single instance doesn't overwhelm MySQL
+      min: 0,
+      acquire: 60000, // Wait up to 60 seconds to secure a slot before giving up
+      idle: 5000
     },
-
-    // ⚡ FIX 2: Give the driver extra connection time to push large strings through
     dialectOptions: {
-      connectTimeout: 60000 // 60 seconds connection timeout
+      connectTimeout: 60000
     }
   }
 );
