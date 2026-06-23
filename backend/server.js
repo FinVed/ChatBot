@@ -15,8 +15,7 @@ const PORT = process.env.PORT || 5001;
 // Production-ready middleware
 const allowedOrigins = [
   'http://localhost:5173',          // Standard Vite React local framework default
-  'http://localhost:3000',          // Alternative local port fallback
-  /\.vercel\.app$/                  // ⚡ SECURE REGEX MATCH: Permits any Vercel domain you deploy to
+  'http://localhost:3000',
 ];
 
 app.use(cors({
@@ -28,6 +27,10 @@ app.use(cors({
       if (typeof pattern === 'string') return pattern === origin;
       return pattern.test(origin); // Test Vercel regex pattern matching
     });
+
+    if (vercelRegex.test(origin)) {
+      return callback(null, true);
+    }
 
     if (isAllowed) {
       callback(null, true);
